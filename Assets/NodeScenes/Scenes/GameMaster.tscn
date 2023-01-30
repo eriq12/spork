@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/Scenes/GameMaster.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Entities/PartyData.gd" type="Script" id=2]
+[ext_resource path="res://Assets/NodeScenes/ControllerHandler.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/NodeScenes/UI/BaseUI.tscn" type="PackedScene" id=4]
+
+[node name="GameMaster" type="Node"]
+script = ExtResource( 1 )
+default_scene = "res://Assets/NodeScenes/Scenes/Levels/TestWorld.tscn"
+
+[node name="PartyData" type="Node" parent="." groups=["Persistient"]]
+script = ExtResource( 2 )
+
+[node name="ControllerHandlerFour" parent="PartyData" instance=ExtResource( 3 )]
+
+[node name="ControllerHandlerThree" parent="PartyData" instance=ExtResource( 3 )]
+
+[node name="ControllerHandlerTwo" parent="PartyData" instance=ExtResource( 3 )]
+
+[node name="ControllerHandlerOne" parent="PartyData" instance=ExtResource( 3 )]
+
+[node name="Control" parent="." instance=ExtResource( 4 )]
+
+[editable path="Control"]

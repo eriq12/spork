@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/NodeScenes/UI/PlayerUILeft.tscn" type="PackedScene" id=1]
+
+[node name="Control" type="CanvasLayer"]
+
+[node name="PlayerOneUI" type="Control" parent="."]
+anchor_right = 0.3
+anchor_bottom = 0.5
+
+[node name="PlayerMenuUI" parent="PlayerOneUI" instance=ExtResource( 1 )]
+
+[node name="PlayerTwoUI" type="Control" parent="."]
+anchor_top = 0.5
+anchor_right = 0.3
+anchor_bottom = 1.0
+
+[node name="PlayerMenuUI" parent="PlayerTwoUI" instance=ExtResource( 1 )]
+
+[node name="PlayerThreeUI" type="Control" parent="."]
+anchor_left = 0.7
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_bottom = -1.0
+
+[node name="PlayerMenuUI" parent="PlayerThreeUI" instance=ExtResource( 1 )]
+
+[node name="PlayerFourUI" type="Control" parent="."]
+anchor_left = 0.7
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 1.0
+
+[node name="PlayerMenuUI" parent="PlayerFourUI" instance=ExtResource( 1 )]

@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/NodeScenes/UI/MenuPanels/TestMenuPanel.tscn" type="PackedScene" id=2]
+
+[node name="MenuDialogue" type="PanelContainer"]
+anchor_left = 0.1
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PlayerMenuUI" type="TabContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1145.0
+margin_bottom = 713.0
+tab_align = 0
+
+[node name="Panel" parent="PlayerMenuUI" instance=ExtResource( 2 )]
+
+[node name="Inventory" type="ScrollContainer" parent="PlayerMenuUI"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="ItemList" type="ItemList" parent="PlayerMenuUI/Inventory"]
