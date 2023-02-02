@@ -10,5 +10,14 @@ anchor_bottom = 1.0
 script = ExtResource( 3 )
 
 [node name="StatusBar" parent="." instance=ExtResource( 1 )]
+anchor_left = 0.9
+anchor_right = 1.0
 
 [node name="MenuDialogue" parent="." instance=ExtResource( 2 )]
+anchor_left = 0.0
+anchor_right = 0.9
+
+[node name="PlayerMenuUI" parent="MenuDialogue" index="0"]
+tab_align = 2
+
+[editable path="MenuDialogue"]

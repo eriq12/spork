@@ -15,7 +15,7 @@ signal button_released(button_id)
 
 signal direction_pressed(direction_id)
 
-signal switch_control(device_id)
+signal player_connection_changed(player_id)
 
 var last_direction : int = -1
 
@@ -42,10 +42,6 @@ func _unhandled_input(event):
 						elif event.pressed:
 							emit_signal("direction_pressed", event_direction)
 							last_direction = event_direction
-					# start button to bring menus
-					JOY_R2, JOY_SELECT:
-						if event.pressed:
-							emit_signal("switch_control", player)
 					# other buttons to let other end to handle
 					_:
 						emit_signal("button_pressed" if event.pressed else "button_released", event.button_index)
@@ -55,6 +51,7 @@ func _unhandled_input(event):
 	elif event is InputEventJoypadButton and event.button_index == JOY_XBOX_A:
 		set_device(event.device)
 		active = true
+		emit_signal("player_connection_changed", player)
 		get_tree().set_input_as_handled()
 
 # sets the device and device name
@@ -67,6 +64,9 @@ func set_device(new_device : int):
 func disable_device():
 	device_name = ""
 	device = -1
+
+func player_active() -> bool:
+	return device != -1
 
 # sets player id in coresponding array (in gamemaster object)
 func set_player_id(id):

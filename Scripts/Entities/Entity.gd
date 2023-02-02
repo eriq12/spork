@@ -55,8 +55,18 @@ func set_grid_position(direction_move: int):
 	get_parent().update_position(self, location)
 
 func pressed_button(button_id):
-	if button_id == JOY_XBOX_B:
-		animator.set_speed_scale(2.0)
+	match button_id:
+		JOY_XBOX_B:
+			animator.set_speed_scale(2.0)
+		JOY_R2, JOY_START:
+			reset_states()
+			var gm = get_tree().root.get_node("GameMaster")
+			if gm != null and gm.has_method("exit_overworld_player"):
+				gm.exit_overworld_player()
+
+func reset_states():
+	animator.set_speed_scale(1.0)
+	moving_direction = -1
 
 func released_button(button_id):
 	if button_id == JOY_XBOX_B:
