@@ -41,23 +41,31 @@ func _ready():
 		controller_handlers[i].connect("player_connection_changed", self, "controller_active_toggle")
 		controller_control_state.push_back(CONTROL_STATE.NONE)
 
+# loads map (along with removing the current one should there be one in play)
 func load_map(scene_source : String):
-	# unpair player form map if they are on
-	for i in range(controller_control_state.size()):
-		if controller_control_state[i] == CONTROL_STATE.PLAYER:
-			set_controller_to_menu(i)
-	# unload existing map if exists
 	if map != null:
-		map.queue_free()
+		unload_map()
 	# load overworld maps
 	map = load(scene_source).instance()
 	add_child(map)
 	player_avatar = map.get_player()
 
+# removes map from play (and kicks players to their menu)
+func unload_map():
+	# unpair player form map if they are on
+	exit_overworld_player()
+	# unload existing map if exists
+	if map != null:
+		player_avatar = null
+		map.queue_free()
+		map = null
+
+# removes player from overworld control (if there exists one)
 func exit_overworld_player():
 	if player_controller != -1:
 		set_controller_to_menu(player_controller)
 
+# OLD CODE: swaps control between menu and overworld should you not know the current state of player
 func swap_control(player_id):
 	match controller_control_state[player_id]:
 		# swap to player or no change if player already taken
@@ -69,7 +77,7 @@ func swap_control(player_id):
 			print("Changing control of player %d to their menu" % player_id)
 			set_controller_to_menu(player_id)
 		
-
+# sets player to control overworld
 func set_controller_to_player(controller_handler_id : int) -> bool:
 	var controller_handler : ControllerHandler = controller_handlers[controller_handler_id]
 	if player_controller == -1:
@@ -80,6 +88,7 @@ func set_controller_to_player(controller_handler_id : int) -> bool:
 		return true
 	return false
 
+# sets player to control menu
 func set_controller_to_menu(controller_handler_id : int):
 	var ui_menu = user_menu_ui[controller_handler_id]
 	var controller_handler : ControllerHandler = controller_handlers[controller_handler_id]
@@ -105,6 +114,8 @@ func clear_connections(node:Node, signal_name:String):
 	for conn in connections:
 		node.disconnect(conn.signal, conn.target, conn.method)
 
+# toggles controller being active and accepting information and none at all
+# (should be called when a controller_handler accepts a device)
 func controller_active_toggle(player_id : int):
 	if controller_control_state[player_id] == CONTROL_STATE.NONE:
 		# enable controller and give control to menu

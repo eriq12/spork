@@ -20,8 +20,6 @@ func _process(_delta):
 			sprite.set_animation(new_anim)
 			sprite.set_frame(3)
 		_try_moving(input_direction)
-	
-	
 
 func _try_moving(direction):
 	set_process(false)
