@@ -80,7 +80,7 @@ func swap_control(player_id):
 # sets player to control overworld
 func set_controller_to_player(controller_handler_id : int) -> bool:
 	var controller_handler : ControllerHandler = controller_handlers[controller_handler_id]
-	if player_controller == -1:
+	if player_controller == -1 or player_controller == controller_handler.get_player_id():
 		player_controller = controller_handler.get_player_id()
 		set_controller_target(controller_handler, player_avatar)
 		controller_control_state[controller_handler_id] = CONTROL_STATE.PLAYER
@@ -89,15 +89,14 @@ func set_controller_to_player(controller_handler_id : int) -> bool:
 	return false
 
 # sets player to control menu
-func set_controller_to_menu(controller_handler_id : int):
+func set_controller_to_menu(controller_handler_id : int, temporary_control : bool = false):
 	var ui_menu = user_menu_ui[controller_handler_id]
 	var controller_handler : ControllerHandler = controller_handlers[controller_handler_id]
 	set_controller_target(controller_handler, ui_menu)
 	controller_control_state[controller_handler_id] = CONTROL_STATE.MENU
 	user_menu_ui[controller_handler_id].set_menu_active(true)
-	if(player_controller == controller_handler_id):
+	if player_controller == controller_handler_id and not temporary_control:
 		player_controller = -1
-
 
 # sets the controller to handle the current map's player entity
 func set_controller_target(controller_handler : ControllerHandler, target):
