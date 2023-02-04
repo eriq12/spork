@@ -13,6 +13,7 @@ const direction_vec = [Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT, Vector2.UP]
 const _event_method_dict : Dictionary = {"direction_pressed":"input_direction","button_pressed":"pressed_button","button_released":"released_button"}
 
 var moving_direction : int = -1
+var looking_direction : int = DIRECTION.DOWN
 
 onready var map : Node2D = get_parent()
 
@@ -32,9 +33,9 @@ func progress_walk():
 	sprite.set_frame_coords(coords)
 
 func set_look_direction(new_direction : int):
-	var old_direction = sprite.get_frame_coords().y
-	if not old_direction == new_direction:
+	if not looking_direction == new_direction:
 		sprite.set_frame_coords(Vector2(0, new_direction))
+		looking_direction = new_direction
 
 func play_walk(direction : int):
 	self.set_process(false)
@@ -63,6 +64,10 @@ func pressed_button(button_id):
 			var gm = get_tree().root.get_node("GameMaster")
 			if gm != null and gm.has_method("exit_overworld_player"):
 				gm.exit_overworld_player()
+		JOY_XBOX_A:
+			var interact_location = location + direction_vec[looking_direction]
+			if map.has_method("interact"):
+				map.interact(int(interact_location.x), int(interact_location.y))
 
 func reset_states():
 	animator.set_speed_scale(1.0)

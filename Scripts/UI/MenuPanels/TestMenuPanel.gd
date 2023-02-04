@@ -23,7 +23,7 @@ func direction_pressed(direction_id : int):
 		_set_selected(new_selection)
 
 func interact():
-	pass
+	print("Interact %s" % selected.text)
 
 func _set_selected(new_selection : Control):
 	var temp : Control = selected

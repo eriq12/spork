@@ -43,6 +43,11 @@ _global_script_classes=[ {
 "class": "PlayerData",
 "language": "GDScript",
 "path": "res://Scripts/Entities/PlayerData.gd"
+}, {
+"base": "BaseMenuPanel",
+"class": "PromptPanel",
+"language": "GDScript",
+"path": "res://Scripts/UI/MenuPanels/Prompt.gd"
 } ]
 _global_script_class_icons={
 "BaseMenuPanel": "",
@@ -51,7 +56,8 @@ _global_script_class_icons={
 "GameMaster": "",
 "InteractibleTile": "",
 "LevelTemplate": "",
-"PlayerData": ""
+"PlayerData": "",
+"PromptPanel": ""
 }
 
 [application]

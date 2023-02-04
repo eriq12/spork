@@ -1,5 +1,7 @@
 extends BaseMenuPanel
 
+class_name PromptPanel
+
 signal acknowledged()
 
 func interact():
