@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Themes/Tab_FG.tres" type="StyleBox" id=1]
 [ext_resource path="res://Assets/NodeScenes/UI/MenuPanels/TestMenuPanel.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Themes/Tab_BG.tres" type="StyleBox" id=3]
 [ext_resource path="res://Assets/Themes/Panel_BG.tres" type="StyleBox" id=4]
+[ext_resource path="res://Assets/NodeScenes/UI/MenuPanels/Prompt.tscn" type="PackedScene" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.145098, 0.145098, 0.164706, 1 )
@@ -13,11 +14,15 @@ draw_center = false
 anchor_left = 0.1
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = -1.0
+margin_bottom = -1.0
 custom_styles/panel = SubResource( 1 )
 
 [node name="PlayerMenuUI" type="TabContainer" parent="."]
-margin_right = 1152.0
-margin_bottom = 720.0
+margin_right = 1150.0
+margin_bottom = 718.0
 custom_constants/side_margin = 0
 custom_styles/tab_fg = ExtResource( 1 )
 custom_styles/tab_bg = ExtResource( 3 )
@@ -35,9 +40,10 @@ custom_styles/panel = ExtResource( 1 )
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
 margin_top = 24.0
-margin_right = -4.0
-margin_bottom = -4.0
 
 [node name="ItemList" type="ItemList" parent="PlayerMenuUI/Inventory"]
+
+[node name="Prompt" parent="PlayerMenuUI" instance=ExtResource( 5 )]
+visible = false
+margin_top = 24.0
