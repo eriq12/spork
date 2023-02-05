@@ -134,4 +134,4 @@ func prompt_overworld_player(prompt_text : String):
 	menu.prompt_user(prompt_text)
 	# wait for user to acknowledge
 	yield(menu, "prompt_acknowledged")
-	set_controller_to_player(player_controller)
+	assert(set_controller_to_player(player_controller), "Something went wrong returning player to overworld control")
