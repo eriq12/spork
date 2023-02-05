@@ -18,7 +18,7 @@ func _ready():
 
 func pressed_direction(direction_id):
 	var current_panel = panel_dialogues[menu_panel.current_tab]
-	if current_panel is BaseMenuPanel or current_panel.has_method():
+	if current_panel.has_method("direction_pressed"):
 		current_panel.direction_pressed(direction_id)
 
 func pressed_button(button_id):
