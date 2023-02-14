@@ -20,5 +20,5 @@ func _ready():
 
 func interact(x : int, y : int):
 	var location : Vector2 = Vector2(x, y)
-	if interactible_objects.has(location):
+	if interactible_objects.has(location) and interactible_objects[location] is InteractibleTile:
 		interactible_objects[location].interact()

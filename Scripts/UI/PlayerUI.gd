@@ -1,23 +1,19 @@
 extends Control
 
 onready var menu_panel : TabContainer = $MenuDialogue/PlayerMenuUI
-onready var panel_dialogues : Array = menu_panel.get_children()
 onready var game_master : GameMaster = get_tree().root.get_node("GameMaster")
 var player_id : int
 const _event_method_dict : Dictionary = {"direction_pressed":"pressed_direction","button_pressed":"pressed_button"}
 
-var prompt_panel : PromptPanel
 signal prompt_acknowledged()
 
 var panel_unlocked : bool = true
 
 func _ready():
 	$MenuDialogue.visible = false
-	prompt_panel = menu_panel.get_node("Prompt")
-	menu_panel.remove_child(prompt_panel)
 
 func pressed_direction(direction_id):
-	var current_panel = panel_dialogues[menu_panel.current_tab]
+	var current_panel = menu_panel.get_child(menu_panel.current_tab)
 	if current_panel.has_method("direction_pressed"):
 		current_panel.direction_pressed(direction_id)
 
@@ -31,7 +27,7 @@ func pressed_button(button_id):
 			if game_master != null and panel_unlocked:
 				game_master.set_controller_to_player(player_id)
 		JOY_XBOX_A:
-			var current_panel = panel_dialogues[menu_panel.current_tab]
+			var current_panel = menu_panel.get_child(menu_panel.current_tab)
 			if current_panel.has_method("interact"):
 				current_panel.interact()
 
@@ -62,15 +58,14 @@ func has_event_handler_method(event : String) -> bool:
 func set_menu_active(state : bool):
 	$MenuDialogue.visible = state
 
-func prompt_user(prompt : String):
+func prompt_user(prompt : Control):
 	var current_tab : int = menu_panel.current_tab
 	var prompt_tab_index = menu_panel.get_tab_count()
-	menu_panel.add_child(prompt_panel)
+	menu_panel.add_child(prompt)
 	lock()
 	menu_panel.current_tab = prompt_tab_index
-	prompt_panel.set_prompt(prompt)
-	yield(prompt_panel, "acknowledged")
+	yield(prompt, "close_panel")
 	menu_panel.current_tab = current_tab
 	unlock()
-	menu_panel.remove_child(prompt_panel)
+	menu_panel.remove_child(prompt)
 	emit_signal("prompt_acknowledged")
