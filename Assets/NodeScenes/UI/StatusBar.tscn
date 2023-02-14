@@ -16,9 +16,7 @@ region = Rect2( 21, 144, 6, 16 )
 anchor_right = 0.1
 anchor_bottom = 1.0
 margin_left = 1.0
-margin_top = 1.0
 margin_right = -1.0
-margin_bottom = -1.0
 custom_styles/panel = ExtResource( 3 )
 
 [node name="TextureRect" type="TextureRect" parent="."]

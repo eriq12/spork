@@ -126,12 +126,12 @@ func controller_active_toggle(player_id : int):
 			clear_connections(controller_handler, event)
 		controller_control_state[player_id] = CONTROL_STATE.NONE
 
-func prompt_overworld_player(prompt_text : String):
+func prompt_overworld_player(prompt : Control):
 	# get player menu
 	var menu = user_menu_ui[player_controller]
 	# change control to menu
 	set_controller_to_menu(player_controller, true)
-	menu.prompt_user(prompt_text)
+	menu.prompt_user(prompt)
 	# wait for user to acknowledge
 	yield(menu, "prompt_acknowledged")
 	set_controller_to_player(player_controller)
