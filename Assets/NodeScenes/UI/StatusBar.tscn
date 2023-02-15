@@ -15,8 +15,6 @@ region = Rect2( 21, 144, 6, 16 )
 [node name="StatusBar" type="Panel"]
 anchor_right = 0.1
 anchor_bottom = 1.0
-margin_left = 1.0
-margin_right = -1.0
 custom_styles/panel = ExtResource( 3 )
 
 [node name="TextureRect" type="TextureRect" parent="."]

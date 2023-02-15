@@ -14,8 +14,8 @@ const events = ["direction_pressed","button_pressed","button_released"]
 
 # overworld map
 export var default_scene : String = ""
+var map_asset : String
 var map : LevelTemplate
-var location : Vector2
 var player_avatar : Entity = null
 var player_controller : int = -1
 
@@ -25,7 +25,8 @@ var user_menu_ui : Array = []
 ### methods
 
 func _ready():
-	load_map(default_scene)
+	if not load_data():
+		load_map(default_scene)
 	
 	# add all PlayerMenuUI
 	for child in $Control.get_children():
@@ -41,14 +42,41 @@ func _ready():
 		controller_handlers[i].connect("player_connection_changed", self, "controller_active_toggle")
 		controller_control_state.push_back(CONTROL_STATE.NONE)
 
+# load data, returns true if 
+func load_data() -> bool:
+	var save_game = File.new()
+	# if file does not exist return failure, else read file
+	if not save_game.file_exists("user://savegame.save"):
+		return false
+	save_game.open("user://savegame.save", File.READ)
+	# get map data
+	var map_data = parse_json(save_game.get_line())
+	load_map(map_data["map_asset"], map_data["x"], map_data["y"], map_data["look_direction"])
+	save_game.close()
+	return true
+
+# save data
+func save_data():
+	var save_game = File.new()
+	save_game.open("user://savegame.save", File.WRITE)
+	save_game.store_line(to_json(save()))
+	save_game.close()
+	
+
 # loads map (along with removing the current one should there be one in play)
-func load_map(scene_source : String):
-	if map != null:
-		unload_map()
-	# load overworld maps
-	map = load(scene_source).instance()
-	add_child(map)
-	player_avatar = map.get_player()
+func load_map(scene_source : String, x : int = 0, y : int = 0, look_direction : int = 0):
+	if scene_source != map_asset:
+		if map != null:
+			unload_map()
+		# load overworld maps
+		map = load(scene_source).instance()
+		add_child(map)
+		player_avatar = map.get_player()
+		# remember map source
+		map_asset = scene_source
+	# set proper position for player
+	player_avatar.set_grid_position(Vector2(x, y))
+	player_avatar.set_look_direction(look_direction)
 
 # removes map from play (and kicks players to their menu)
 func unload_map():
@@ -59,6 +87,19 @@ func unload_map():
 		player_avatar = null
 		map.queue_free()
 		map = null
+		map_asset = ""
+
+func save():
+	var location = player_avatar.get_grid_position()
+	var x : int = int(location.x)
+	var y : int = int(location.y)
+	var save_dict = {
+		"map_asset" : map_asset,
+		"x" : x,
+		"y" : y,
+		"look_direction" : player_avatar.get_look_direction()
+	}
+	return save_dict
 
 # removes player from overworld control (if there exists one)
 func exit_overworld_player():

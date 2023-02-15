@@ -59,5 +59,5 @@ func is_open(new_location : Vector2) -> bool:
 	var y = int(new_location.y)
 	return no_wall(x, y) and has_ground(x, y) and no_interactible(x, y)
 
-func interact(x : int, y : int):
+func interact(_x : int, _y : int):
 	pass
