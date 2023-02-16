@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Entities/Entity.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Textures/Sprites/Commissions/Template.png" type="Texture" id=2]
+[ext_resource path="res://Assets/TextureResources/BaseCharacter.png.tres" type="Texture" id=2]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -61,7 +61,7 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [ 0 ],
-"method": "set_grid_position"
+"method": "move"
 } ]
 }
 
@@ -108,7 +108,7 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [ 1 ],
-"method": "set_grid_position"
+"method": "move"
 } ]
 }
 
@@ -155,7 +155,7 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [ 2 ],
-"method": "set_grid_position"
+"method": "move"
 } ]
 }
 
@@ -202,7 +202,7 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [ 3 ],
-"method": "set_grid_position"
+"method": "move"
 } ]
 }
 

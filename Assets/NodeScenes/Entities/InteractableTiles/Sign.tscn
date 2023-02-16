@@ -13,4 +13,5 @@ atlas_index_y = null
 text = null
 
 [node name="Prompt" parent="." instance=ExtResource( 2 )]
+visible = false
 margin_top = 24.0

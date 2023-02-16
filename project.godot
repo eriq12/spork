@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/UI/MenuPanels/BaseMenuPanel.gd"
 }, {
+"base": "BaseMenuPanel",
+"class": "ButtonMenuPanel",
+"language": "GDScript",
+"path": "res://Scripts/UI/MenuPanels/ButtonMenuPanel.gd"
+}, {
 "base": "Node",
 "class": "ControllerHandler",
 "language": "GDScript",
@@ -51,6 +56,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "BaseMenuPanel": "",
+"ButtonMenuPanel": "",
 "ControllerHandler": "",
 "Entity": "",
 "GameMaster": "",

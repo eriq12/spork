@@ -7,9 +7,12 @@
 
 [node name="GameMaster" type="Node"]
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_horizontal_guides_": [  ]
+}
 default_scene = "res://Assets/NodeScenes/Scenes/Levels/TestWorld.tscn"
 
-[node name="PartyData" type="Node" parent="." groups=["Persistient"]]
+[node name="PartyData" type="Node" parent="."]
 script = ExtResource( 2 )
 
 [node name="ControllerHandlerFour" parent="PartyData" instance=ExtResource( 3 )]

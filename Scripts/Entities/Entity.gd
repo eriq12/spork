@@ -12,16 +12,16 @@ const anim_name = [ "walk_down", "walk_left", "walk_right", "walk_up" ]
 const direction_vec = [Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT, Vector2.UP]
 const _event_method_dict : Dictionary = {"direction_pressed":"input_direction","button_pressed":"pressed_button","button_released":"released_button"}
 
-var moving_direction : int = -1
-var looking_direction : int = DIRECTION.DOWN
+var _moving_direction : int = -1
+var _looking_direction : int = DIRECTION.DOWN
 
 onready var map : Node2D = get_parent()
 
 func _process(_delta):
-	if moving_direction >= 0 and moving_direction <= 3:
-		set_look_direction(moving_direction)
-		if map.is_open(location + direction_vec[moving_direction]):
-			play_walk(moving_direction)
+	if _moving_direction >= 0 and _moving_direction <= 3:
+		set_look_direction(_moving_direction)
+		if map.is_open(location + direction_vec[_moving_direction]):
+			play_walk(_moving_direction)
 	elif (int(sprite.get_frame_coords().x) & 1 == 1):
 		stop_walk()
 
@@ -32,10 +32,13 @@ func progress_walk():
 		coords.x = 0
 	sprite.set_frame_coords(coords)
 
+func get_look_direction() -> int:
+	return _looking_direction
+
 func set_look_direction(new_direction : int):
-	if not looking_direction == new_direction:
+	if not _looking_direction == new_direction:
 		sprite.set_frame_coords(Vector2(0, new_direction))
-		looking_direction = new_direction
+		_looking_direction = new_direction
 
 func play_walk(direction : int):
 	self.set_process(false)
@@ -49,11 +52,17 @@ func stop_walk():
 	sprite.set_frame_coords(coords)
 
 func input_direction(direction: int):
-	moving_direction = direction
+	_moving_direction = direction
 
-func set_grid_position(direction_move: int):
-	location = location + direction_vec[direction_move]
-	get_parent().update_position(self, location)
+func get_grid_position() -> Vector2:
+	return location
+
+func move(direction_move:int):
+	set_grid_position(location + direction_vec[direction_move])
+
+func set_grid_position(new_location: Vector2):
+	location = new_location
+	get_parent().update_position(self, new_location)
 
 func pressed_button(button_id):
 	match button_id:
@@ -65,13 +74,13 @@ func pressed_button(button_id):
 			if gm != null and gm.has_method("exit_overworld_player"):
 				gm.exit_overworld_player()
 		JOY_XBOX_A:
-			var interact_location = location + direction_vec[looking_direction]
+			var interact_location = location + direction_vec[_looking_direction]
 			if map.has_method("interact"):
 				map.interact(int(interact_location.x), int(interact_location.y))
 
 func reset_states():
 	animator.set_speed_scale(1.0)
-	moving_direction = -1
+	_moving_direction = -1
 
 func released_button(button_id):
 	if button_id == JOY_XBOX_B:

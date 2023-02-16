@@ -1,7 +1,7 @@
 extends Control
 
 onready var menu_panel : TabContainer = $MenuDialogue/PlayerMenuUI
-onready var game_master : GameMaster = get_tree().root.get_node("GameMaster")
+onready var game_master : GameMaster 
 var player_id : int
 const _event_method_dict : Dictionary = {"direction_pressed":"pressed_direction","button_pressed":"pressed_button"}
 
@@ -11,6 +11,10 @@ var panel_unlocked : bool = true
 
 func _ready():
 	$MenuDialogue.visible = false
+	var save_menu = find_node("Save")
+	game_master = get_tree().root.get_node("GameMaster")
+	save_menu.connect("save_data", game_master, "save_data")
+	save_menu.connect("load_data", game_master, "load_data")
 
 func pressed_direction(direction_id):
 	var current_panel = menu_panel.get_child(menu_panel.current_tab)

@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Themes/Panel_BG.tres" type="StyleBox" id=1]
+[ext_resource path="res://Scripts/UI/MenuPanels/SaveMenu.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Themes/UnselectedButton.tres" type="StyleBox" id=3]
+
+[node name="Save" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+custom_constants/separation = 10
+
+[node name="SaveButton" type="Button" parent="VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 283.0
+focus_neighbour_bottom = NodePath("../LoadButton")
+size_flags_vertical = 3
+custom_styles/normal = ExtResource( 3 )
+text = "Save"
+
+[node name="LoadButton" type="Button" parent="VBoxContainer"]
+margin_top = 293.0
+margin_right = 1024.0
+margin_bottom = 576.0
+focus_neighbour_top = NodePath("../SaveButton")
+size_flags_vertical = 3
+custom_styles/normal = ExtResource( 3 )
+text = "Load"
