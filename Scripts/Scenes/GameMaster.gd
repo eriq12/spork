@@ -16,7 +16,7 @@ const events = ["direction_pressed","button_pressed","button_released"]
 export var default_scene : String = ""
 var map_asset : String
 var map : LevelTemplate
-var player_avatar : Entity = null
+var player_avatar : Player = null
 var player_controller : int = -1
 
 # UI

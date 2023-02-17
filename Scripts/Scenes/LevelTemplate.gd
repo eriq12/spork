@@ -3,17 +3,17 @@ extends Node2D
 class_name LevelTemplate
 
 # base variables
-var player_sprite : Entity
+var player_sprite : Player
 var walls : TileMap
 var ground : TileMap
 var interactibles : TileMap
 
 ## player section
 
-func get_player() -> Entity:
+func get_player() -> Player:
 	return player_sprite
 
-func set_player(player : Entity):
+func set_player(player : Player):
 	player_sprite = player
 
 ## walls
