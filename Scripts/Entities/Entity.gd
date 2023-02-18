@@ -14,6 +14,8 @@ const direction_vec = [Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT, Vector2.UP]
 var _moving_direction : int = -1
 var _looking_direction : int = DIRECTION.DOWN
 
+signal movement_complete
+
 onready var map : Node2D = get_parent()
 
 func _process(_delta):
@@ -43,6 +45,7 @@ func play_walk(direction : int):
 	self.set_process(false)
 	animator.play(anim_name[direction])
 	yield(animator, "animation_finished")
+	emit_signal("movement_complete")
 	self.set_process(true)
 
 func stop_walk():

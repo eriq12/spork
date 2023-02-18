@@ -1,4 +1,4 @@
-extends InteractibleTile
+extends InteractableTile
 
 export var text : String
 

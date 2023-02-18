@@ -35,7 +35,7 @@ _global_script_classes=[ {
 "path": "res://Scripts/Scenes/GameMaster.gd"
 }, {
 "base": "Node",
-"class": "InteractibleTile",
+"class": "InteractableTile",
 "language": "GDScript",
 "path": "res://Scripts/Interactables/InteractableTile.gd"
 }, {
@@ -58,6 +58,11 @@ _global_script_classes=[ {
 "class": "PromptPanel",
 "language": "GDScript",
 "path": "res://Scripts/UI/MenuPanels/Prompt.gd"
+}, {
+"base": "Node",
+"class": "Warp",
+"language": "GDScript",
+"path": "res://Scripts/Interactables/Warp.gd"
 } ]
 _global_script_class_icons={
 "BaseMenuPanel": "",
@@ -65,11 +70,12 @@ _global_script_class_icons={
 "ControllerHandler": "",
 "Entity": "",
 "GameMaster": "",
-"InteractibleTile": "",
+"InteractableTile": "",
 "LevelTemplate": "",
 "Player": "",
 "PlayerData": "",
-"PromptPanel": ""
+"PromptPanel": "",
+"Warp": ""
 }
 
 [application]
