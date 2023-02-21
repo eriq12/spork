@@ -62,7 +62,17 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Warp",
 "language": "GDScript",
-"path": "res://Scripts/Interactables/Warp.gd"
+"path": "res://Scripts/Interactables/warps/Warp.gd"
+}, {
+"base": "Warp",
+"class": "WarpLine",
+"language": "GDScript",
+"path": "res://Scripts/Interactables/warps/WarpLine.gd"
+}, {
+"base": "Warp",
+"class": "WarpPoints",
+"language": "GDScript",
+"path": "res://Scripts/Interactables/warps/WarpPoints.gd"
 } ]
 _global_script_class_icons={
 "BaseMenuPanel": "",
@@ -75,7 +85,9 @@ _global_script_class_icons={
 "Player": "",
 "PlayerData": "",
 "PromptPanel": "",
-"Warp": ""
+"Warp": "",
+"WarpLine": "",
+"WarpPoints": ""
 }
 
 [application]

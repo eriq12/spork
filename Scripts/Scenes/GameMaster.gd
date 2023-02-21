@@ -78,7 +78,7 @@ func load_map(scene_source, x : int = 0, y : int = 0, look_direction : int = 0):
 		player_avatar = map.get_player()
 		# if player had control, shift back
 		if temp_player_controller != -1:
-			assert(set_controller_to_player(temp_player_controller), "Something went wrong switching between scenes")
+			set_controller_to_player(temp_player_controller)
 		# remember map source
 		map_asset = scene_source
 	# set proper position for player
@@ -113,28 +113,14 @@ func exit_overworld_player():
 	if player_controller != -1:
 		set_controller_to_menu(player_controller)
 
-# OLD CODE: swaps control between menu and overworld should you not know the current state of player
-func swap_control(player_id):
-	match controller_control_state[player_id]:
-		# swap to player or no change if player already taken
-		CONTROL_STATE.MENU:
-			if set_controller_to_player(player_id):
-				print("Changed control of player %d to control overworld sprite." % player_id)
-		# swap to menu
-		_:
-			print("Changing control of player %d to their menu" % player_id)
-			set_controller_to_menu(player_id)
-		
 # sets player to control overworld
-func set_controller_to_player(controller_handler_id : int) -> bool:
+func set_controller_to_player(controller_handler_id : int):
 	var controller_handler : ControllerHandler = controller_handlers[controller_handler_id]
 	if player_controller == -1 or player_controller == controller_handler.get_player_id():
 		player_controller = controller_handler.get_player_id()
 		set_controller_target(controller_handler, player_avatar)
 		controller_control_state[controller_handler_id] = CONTROL_STATE.PLAYER
 		user_menu_ui[controller_handler_id].set_menu_active(false)
-		return true
-	return false
 
 # sets player to control menu
 func set_controller_to_menu(controller_handler_id : int, temporary_control : bool = false):
@@ -182,4 +168,4 @@ func prompt_overworld_player(prompt : Control):
 	menu.prompt_user(prompt)
 	# wait for user to acknowledge
 	yield(menu, "prompt_acknowledged")
-	assert(set_controller_to_player(player_controller), "Something went wrong returning player to overworld control")
+	set_controller_to_player(player_controller)

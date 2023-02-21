@@ -4,7 +4,7 @@
 [ext_resource path="res://Assets/NodeScenes/Entities/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Textures/TileSets/Ground.tres" type="TileSet" id=3]
 [ext_resource path="res://Assets/Textures/TileSets/Building.tres" type="TileSet" id=4]
-[ext_resource path="res://Scripts/Interactables/Warp.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/Interactables/warps/WarpLine.gd" type="Script" id=5]
 
 [node name="TestWorldTwo" type="Node2D"]
 script = ExtResource( 1 )
@@ -28,6 +28,9 @@ format = 1
 
 [node name="TestWorldWarp" type="Node" parent="Warps"]
 script = ExtResource( 5 )
-warp_points = [ Vector2( -24, 14 ), Vector2( -24, 15 ), Vector2( -24, 16 ) ]
-warp_destinations = [ Vector2( 13, 3 ), Vector2( 13, 4 ), Vector2( 13, 5 ) ]
 warp_destination_scene = "res://Assets/NodeScenes/Scenes/Levels/TestWorld.tscn"
+vertical_source = true
+source = Vector2( -24, 14 )
+vertical_destination = true
+destination = Vector2( 13, 3 )
+length = 3
