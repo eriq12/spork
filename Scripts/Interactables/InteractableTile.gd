@@ -1,6 +1,6 @@
 extends Node
 
-class_name InteractibleTile
+class_name InteractableTile
 
 # location
 export var x : int

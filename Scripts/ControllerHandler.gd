@@ -44,7 +44,11 @@ func _unhandled_input(event):
 							last_direction = event_direction
 					# other buttons to let other end to handle
 					_:
-						emit_signal("button_pressed" if event.pressed else "button_released", event.button_index)
+						# separated signal emitted to remove the warning
+						if event.pressed:
+							emit_signal("button_pressed", event.button_index)
+						else:
+							emit_signal("button_released", event.button_index)
 			# TODO: implement joystick events
 			get_tree().set_input_as_handled()
 	# to handle accepting other 

@@ -10,11 +10,12 @@ var controller_control_state : Array = []
 var controller_handlers : Array = []
 var character_control : Array = []
 const events = ["direction_pressed","button_pressed","button_released"]
+const save_file_name = "user://savegame.save"
 
 
 # overworld map
-export var default_scene : String = ""
-var map_asset : String
+export(PackedScene) var default_scene
+var map_asset : PackedScene
 var map : LevelTemplate
 var player_avatar : Player = null
 var player_controller : int = -1
@@ -46,9 +47,9 @@ func _ready():
 func load_data() -> bool:
 	var save_game = File.new()
 	# if file does not exist return failure, else read file
-	if not save_game.file_exists("user://savegame.save"):
+	if not save_game.file_exists(save_file_name):
 		return false
-	save_game.open("user://savegame.save", File.READ)
+	save_game.open(save_file_name, File.READ)
 	# get map data
 	var map_data = parse_json(save_game.get_line())
 	load_map(map_data["map_asset"], map_data["x"], map_data["y"], map_data["look_direction"])
@@ -58,20 +59,26 @@ func load_data() -> bool:
 # save data
 func save_data():
 	var save_game = File.new()
-	save_game.open("user://savegame.save", File.WRITE)
+	save_game.open(save_file_name, File.WRITE)
 	save_game.store_line(to_json(save()))
 	save_game.close()
 	
 
 # loads map (along with removing the current one should there be one in play)
-func load_map(scene_source : String, x : int = 0, y : int = 0, look_direction : int = 0):
+func load_map(scene_source, x : int = 0, y : int = 0, look_direction : int = 0):
+	if scene_source is String:
+		scene_source = load(scene_source)
 	if scene_source != map_asset:
+		var temp_player_controller = player_controller
 		if map != null:
 			unload_map()
 		# load overworld maps
-		map = load(scene_source).instance()
+		map = scene_source.instance()
 		add_child(map)
 		player_avatar = map.get_player()
+		# if player had control, shift back
+		if temp_player_controller != -1:
+			set_controller_to_player(temp_player_controller)
 		# remember map source
 		map_asset = scene_source
 	# set proper position for player
@@ -87,14 +94,14 @@ func unload_map():
 		player_avatar = null
 		map.queue_free()
 		map = null
-		map_asset = ""
+		map_asset = null
 
 func save():
 	var location = player_avatar.get_grid_position()
 	var x : int = int(location.x)
 	var y : int = int(location.y)
 	var save_dict = {
-		"map_asset" : map_asset,
+		"map_asset" : map_asset.get_path(),
 		"x" : x,
 		"y" : y,
 		"look_direction" : player_avatar.get_look_direction()
@@ -106,28 +113,14 @@ func exit_overworld_player():
 	if player_controller != -1:
 		set_controller_to_menu(player_controller)
 
-# OLD CODE: swaps control between menu and overworld should you not know the current state of player
-func swap_control(player_id):
-	match controller_control_state[player_id]:
-		# swap to player or no change if player already taken
-		CONTROL_STATE.MENU:
-			if set_controller_to_player(player_id):
-				print("Changed control of player %d to control overworld sprite." % player_id)
-		# swap to menu
-		_:
-			print("Changing control of player %d to their menu" % player_id)
-			set_controller_to_menu(player_id)
-		
 # sets player to control overworld
-func set_controller_to_player(controller_handler_id : int) -> bool:
+func set_controller_to_player(controller_handler_id : int):
 	var controller_handler : ControllerHandler = controller_handlers[controller_handler_id]
 	if player_controller == -1 or player_controller == controller_handler.get_player_id():
 		player_controller = controller_handler.get_player_id()
 		set_controller_target(controller_handler, player_avatar)
 		controller_control_state[controller_handler_id] = CONTROL_STATE.PLAYER
 		user_menu_ui[controller_handler_id].set_menu_active(false)
-		return true
-	return false
 
 # sets player to control menu
 func set_controller_to_menu(controller_handler_id : int, temporary_control : bool = false):
@@ -175,4 +168,4 @@ func prompt_overworld_player(prompt : Control):
 	menu.prompt_user(prompt)
 	# wait for user to acknowledge
 	yield(menu, "prompt_acknowledged")
-	assert(set_controller_to_player(player_controller), "Something went wrong returning player to overworld control")
+	set_controller_to_player(player_controller)
