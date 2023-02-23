@@ -19,6 +19,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/UI/MenuPanels/ButtonMenuPanel.gd"
 }, {
+"base": "ItemList",
+"class": "CharacterCatalog",
+"language": "GDScript",
+"path": "res://Scripts/UI/MenuPanels/PanelElements/CharacterCatalog.gd"
+}, {
+"base": "Reference",
+"class": "CharacterData",
+"language": "GDScript",
+"path": "res://Scripts/Entities/CharacterData.gd"
+}, {
 "base": "Node",
 "class": "ControllerHandler",
 "language": "GDScript",
@@ -49,11 +59,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Entities/Player.gd"
 }, {
-"base": "Reference",
-"class": "PlayerData",
-"language": "GDScript",
-"path": "res://Scripts/Entities/PlayerData.gd"
-}, {
 "base": "BaseMenuPanel",
 "class": "PromptPanel",
 "language": "GDScript",
@@ -77,13 +82,14 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "BaseMenuPanel": "",
 "ButtonMenuPanel": "",
+"CharacterCatalog": "",
+"CharacterData": "",
 "ControllerHandler": "",
 "Entity": "",
 "GameMaster": "",
 "InteractableTile": "",
 "LevelTemplate": "",
 "Player": "",
-"PlayerData": "",
 "PromptPanel": "",
 "Warp": "",
 "WarpLine": "",

@@ -7,3 +7,6 @@ func direction_pressed(_direction_id : int):
 
 func interact():
 	pass
+
+func update():
+	pass

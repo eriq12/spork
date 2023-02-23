@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Textures/Sprites/GUI/GUI0_Rotated.png" type="Texture" id=1]
-[ext_resource path="res://Assets/Textures/Sprites/Commissions/Template.png" type="Texture" id=2]
+[ext_resource path="res://Assets/TextureResources/CharacterAppearances/DefaultCharacter.png.tres" type="Texture" id=2]
 [ext_resource path="res://Assets/Themes/Panel_BG.tres" type="StyleBox" id=3]
 
 [sub_resource type="AtlasTexture" id=1]

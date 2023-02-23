@@ -8,7 +8,7 @@ export(Array, Vector2) var warp_points
 export(Array, Vector2) var warp_destinations
 
 func get_warp_points() -> Array:
-    return warp_points
+    return Array(warp_points)
 
 func enter_warp(player_char : Player):
     # get coresponding index for warp, if no coresponding one exists, default to first destination

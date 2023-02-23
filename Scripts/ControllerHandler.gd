@@ -6,7 +6,7 @@ enum DIRECTION {DOWN, LEFT, RIGHT, UP}
 
 var device : int = -1
 
-var player : int = -1
+var player : int = -1 setget set_player_id, get_player_id
 var device_name : String
 var active : bool = false
 

@@ -12,13 +12,15 @@ var character_control : Array = []
 const events = ["direction_pressed","button_pressed","button_released"]
 const save_file_name = "user://savegame.save"
 
-
 # overworld map
 export(PackedScene) var default_scene
 var map_asset : PackedScene
 var map : LevelTemplate
 var player_avatar : Player = null
 var player_controller : int = -1
+
+# player data
+onready var party_data = $PartyData
 
 # UI
 var user_menu_ui : Array = []
@@ -31,7 +33,9 @@ func _ready():
 	
 	# add all PlayerMenuUI
 	for child in $Control.get_children():
-		user_menu_ui.push_back(child.get_node("PlayerMenuUI"))
+		var player_menu = child.get_node("PlayerMenuUI")
+		player_menu.player_id = user_menu_ui.size()
+		user_menu_ui.push_back(player_menu)
 	
 	# add the handlers under party data to an array to keep track
 	for child in $PartyData.get_children():
@@ -43,7 +47,7 @@ func _ready():
 		controller_handlers[i].connect("player_connection_changed", self, "controller_active_toggle")
 		controller_control_state.push_back(CONTROL_STATE.NONE)
 
-# load data, returns true if 
+# load data, returns true if data exists, false if no data file exists
 func load_data() -> bool:
 	var save_game = File.new()
 	# if file does not exist return failure, else read file
@@ -52,7 +56,18 @@ func load_data() -> bool:
 	save_game.open(save_file_name, File.READ)
 	# get map data
 	var map_data = parse_json(save_game.get_line())
-	load_map(map_data["map_asset"], map_data["x"], map_data["y"], map_data["look_direction"])
+	if map_data == null:
+		return false
+	load_map(map_data.get("map_asset", default_scene), map_data.get("x", 0), map_data.get("y",0), map_data.get("look_direction", 0))
+	# clear player data
+	party_data.clear_character_catalog()
+	# load player data
+	while save_game.get_position() < save_game.get_len():
+		# get player data
+		var player_data = parse_json(save_game.get_line())
+		var new_player := CharacterData.new()
+		new_player.load_data(player_data)
+	# close file
 	save_game.close()
 	return true
 
@@ -60,9 +75,26 @@ func load_data() -> bool:
 func save_data():
 	var save_game = File.new()
 	save_game.open(save_file_name, File.WRITE)
-	save_game.store_line(to_json(save()))
+	save_game.store_line(to_json(save_map()))
+	# get player data
+	var characters = party_data.get_character_catalog()
+	# for each one in catalog, write to save file
+	for c in characters:
+		save_game.store_line(to_json(c.save_data()))
 	save_game.close()
-	
+
+# saves relevant map data
+func save_map() -> Dictionary:
+	var location = player_avatar.get_grid_position()
+	var x : int = int(location.x)
+	var y : int = int(location.y)
+	var save_dict = {
+		"map_asset" : map_asset.get_path(),
+		"x" : x,
+		"y" : y,
+		"look_direction" : player_avatar.get_look_direction()
+	}
+	return save_dict
 
 # loads map (along with removing the current one should there be one in play)
 func load_map(scene_source, x : int = 0, y : int = 0, look_direction : int = 0):
@@ -96,17 +128,6 @@ func unload_map():
 		map = null
 		map_asset = null
 
-func save():
-	var location = player_avatar.get_grid_position()
-	var x : int = int(location.x)
-	var y : int = int(location.y)
-	var save_dict = {
-		"map_asset" : map_asset.get_path(),
-		"x" : x,
-		"y" : y,
-		"look_direction" : player_avatar.get_look_direction()
-	}
-	return save_dict
 
 # removes player from overworld control (if there exists one)
 func exit_overworld_player():

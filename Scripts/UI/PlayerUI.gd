@@ -2,7 +2,7 @@ extends Control
 
 onready var menu_panel : TabContainer = $MenuDialogue/PlayerMenuUI
 onready var game_master : GameMaster 
-var player_id : int
+var player_id : int setget set_player_id, get_player_id
 const _event_method_dict : Dictionary = {"direction_pressed":"pressed_direction","button_pressed":"pressed_button"}
 
 signal prompt_acknowledged()
@@ -44,6 +44,9 @@ func shift_tab(go_right : bool):
 	elif new_tab >= menu_panel.get_tab_count():
 		new_tab = 0
 	menu_panel.current_tab = new_tab
+	var panel = menu_panel.get_child(menu_panel.current_tab)
+	if panel.has_method("update"):
+		panel.update()
 
 func lock():
 	menu_panel.set_tabs_visible(false)
@@ -73,3 +76,14 @@ func prompt_user(prompt : Control):
 	unlock()
 	menu_panel.remove_child(prompt)
 	emit_signal("prompt_acknowledged")
+
+func get_player_id() -> int:
+	return player_id
+
+func set_player_id(id : int):
+	# set player ui id
+	player_id = id
+	# set for all panels who need it
+	for panel in menu_panel.get_children():
+		if panel.has_method("set_player_id"):
+			panel.set_player_id(id)
