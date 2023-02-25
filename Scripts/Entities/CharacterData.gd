@@ -3,7 +3,7 @@ class_name CharacterData
 export var name : String setget set_name, get_name
 var _max_health : int setget , get_max_health
 var _current_health : int setget , get_current_health
-export var appearance : ImageTexture setget set_appearance, get_appearance
+export var appearance : StreamTexture setget set_appearance, get_appearance
 const default_appearance : String = "res://Assets/TextureResources/CharacterAppearances/DefaultCharacter.png.tres"
 
 signal health_changed(new_health)
@@ -14,7 +14,7 @@ func _init(character_name="Bob", health=20, current_health=-1, image_appearnace=
 	set_name(character_name)
 	_set_max_health(int(max(health, 20)))
 	_set_max_health(health if current_health < 0 else current_health)
-	if image_appearnace.length() > 0:
+	if bool(image_appearnace):
 		appearance = load(image_appearnace)
 
 ### accessors
@@ -32,7 +32,7 @@ func get_current_health() -> int:
 	return _current_health
 
 # get appearance
-func get_appearance() -> ImageTexture:
+func get_appearance() -> StreamTexture:
 	return appearance
 
 ### mutators
@@ -64,7 +64,7 @@ func _set_max_health(new_max_health : int):
 	emit_signal("max_health_changed", new_max_health)
 
 # appearance texture mutator
-func set_appearance(new_appearance : ImageTexture):
+func set_appearance(new_appearance : StreamTexture):
 	appearance = new_appearance
 	emit_signal("appearnace_changed", appearance)
 
