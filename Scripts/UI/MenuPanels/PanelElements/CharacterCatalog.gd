@@ -15,6 +15,9 @@ var selected : int = -1
 # to hold the current characters
 var characters : Array
 
+# to hold whether you have control of character
+var player_controls : Array
+
 # sets the character control, character_array is the list of characters to add to list
 # control is the list of associated players for each characer
 # player_id is the current player to filter against
@@ -45,6 +48,7 @@ func set_characters(character_array : Array, control : Array, player_id : int):
 # disables when number at an index does not match filter or is -1
 # sets to alternate color (party_color) when number at index matches filter
 func set_control(control : Array, filter : int):
+    player_controls = control
     for index in range(characters.size()):
         match(control[index]):
             filter:
@@ -55,8 +59,6 @@ func set_control(control : Array, filter : int):
                 set_item_custom_bg_color(index, default_color)
             _:
                 set_item_disabled(index, true)
-        
-
 
 func move_selection_up():
     # setup start at selction - 1 or at end of item list otherwise

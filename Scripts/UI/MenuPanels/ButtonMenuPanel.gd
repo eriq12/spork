@@ -11,13 +11,13 @@ func direction_pressed(direction_id : int):
 	var new_selection : Control = null
 	match direction_id:
 		ControllerHandler.DIRECTION.UP:
-			new_selection = selected.get_node(selected.get_focus_neighbour(MARGIN_TOP))
+			new_selection = selected.get_node_or_null(selected.get_focus_neighbour(MARGIN_TOP))
 		ControllerHandler.DIRECTION.DOWN:
-			new_selection = selected.get_node(selected.get_focus_neighbour(MARGIN_BOTTOM))
+			new_selection = selected.get_node_or_null(selected.get_focus_neighbour(MARGIN_BOTTOM))
 		ControllerHandler.DIRECTION.LEFT:
-			new_selection = selected.get_node(selected.get_focus_neighbour(MARGIN_LEFT))
+			new_selection = selected.get_node_or_null(selected.get_focus_neighbour(MARGIN_LEFT))
 		ControllerHandler.DIRECTION.RIGHT:
-			new_selection = selected.get_node(selected.get_focus_neighbour(MARGIN_RIGHT))
+			new_selection = selected.get_node_or_null(selected.get_focus_neighbour(MARGIN_RIGHT))
 	if new_selection != null:
 		_set_selected(new_selection)
 

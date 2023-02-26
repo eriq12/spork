@@ -67,6 +67,8 @@ func load_data() -> bool:
 		var player_data = parse_json(save_game.get_line())
 		var new_player := CharacterData.new()
 		new_player.load_data(player_data)
+		# add to party
+		party_data.add_new_character(new_player)
 	# close file
 	save_game.close()
 	return true

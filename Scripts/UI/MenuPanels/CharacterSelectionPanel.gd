@@ -41,12 +41,12 @@ func update_character_roster():
 	# get new player catalog
 	var catalog = party_data.get_character_catalog()
 	# get control
-	var player_control = party_data.get_player_control()
+	var player_control = party_data.get_player_controls()
 	# update character catalog
 	character_catalog.set_characters(catalog, player_control, player_id)
 
 func update_player_control():
-	var player_control = party_data.get_player_control()
+	var player_control = party_data.get_player_controls()
 	character_catalog.set_control(player_control, player_id)
 
 func set_mode(to_party : bool):
@@ -65,5 +65,5 @@ func interact():
 			party_data.add_new_character(CharacterData.new())
 		else:
 			var char_index = selected_catalog.get_selected_index()
-			party_data.update_control(player_id, char_index)
+			party_data.update_control(player_id, char_index, not party_data.has_player_control(char_index, player_id))
 

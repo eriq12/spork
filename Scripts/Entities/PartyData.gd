@@ -1,7 +1,7 @@
 extends Node
 
 var character_catalog : Array = [] setget , get_character_catalog
-var player_control : Array = [] setget , get_player_control
+var player_controls : Array = [] setget , get_player_controls
 
 signal control_change
 signal roster_change
@@ -20,26 +20,37 @@ func clear_character_catalog():
 # accessor for player's party 
 func get_player_party(player_index : int) -> Array:
     var player_party := []
-    for i in range(player_control.size()):
-        if player_control[i] == player_index:
+    for i in range(player_controls.size()):
+        if player_controls[i] == player_index:
+            player_party.append(character_catalog[i])
+    return player_party
+
+func get_full_party() -> Array:
+    var player_party := []
+    for i in range(player_controls.size()):
+        if player_controls[i] != -1:
             player_party.append(character_catalog[i])
     return player_party
 
 # gets the amount of characters in control
 func get_number_characters_selected() -> int:
     var total : int = 0
-    for character in player_control:
+    for character in player_controls:
         if character != -1:
             total+=1
     return total
 
-func get_player_control() -> Array:
-    return Array(player_control)
+# returns whether player has control over character (defaults with player_index -1)
+func has_player_control(character_index : int, player_index : int = -1) -> bool:
+    return player_controls[character_index] == player_index
+
+func get_player_controls() -> Array:
+    return Array(player_controls)
 
 # gets if there is a full combined party
 func is_full_party() -> bool:
     var remaining := 4
-    for character in player_control:
+    for character in player_controls:
         if character != -1:
             remaining -= 1
             if remaining == 0:
@@ -47,13 +58,17 @@ func is_full_party() -> bool:
     return false
 
 # sets control for a character
-func update_control(player_index : int, character_index : int):
-    # TODO: Take into account party size (aka undo mistake of ignoring it)
-    if player_control[character_index] == -1 or player_control[character_index] == player_index:
-        player_control[character_index] = player_index if player_control[character_index] == -1 else -1
+func update_control(player_index : int, character_index : int, assuming_control : bool = true):
+    # bool to find whether the player requesting to assume control is allowed to or not
+    var available_to_control : bool = has_player_control(character_index, player_index) or has_player_control(character_index)
+    # can never take control of another character if the party is full
+    # so long as that is not the case and you are able to change control for the character, it should go through
+    if not(is_full_party() and assuming_control) and available_to_control:
+        player_controls[character_index] = player_index if assuming_control else -1
         emit_signal("control_change")
-
+    
+# creates new character, and sets control of that new character if there is room in party
 func add_new_character(new_character : CharacterData, control : int = -1):
     character_catalog.append(new_character)
-    player_control.append(control)
+    player_controls.append(control if not is_full_party() else -1)
     emit_signal("roster_change")
