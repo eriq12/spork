@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/Scenes/TestWorldTwo.gd" type="Script" id=1]
-[ext_resource path="res://Assets/NodeScenes/Entities/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Textures/TileSets/Ground.tres" type="TileSet" id=3]
 [ext_resource path="res://Assets/Textures/TileSets/Building.tres" type="TileSet" id=4]
 [ext_resource path="res://Scripts/Interactables/warps/WarpLine.gd" type="Script" id=5]
@@ -21,8 +20,6 @@ position = Vector2( -8, -8 )
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 16, 16 )
 format = 1
-
-[node name="Player" parent="." instance=ExtResource( 2 )]
 
 [node name="Warps" type="Node2D" parent="."]
 

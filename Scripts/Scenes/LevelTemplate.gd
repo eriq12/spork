@@ -3,7 +3,6 @@ extends Node2D
 class_name LevelTemplate
 
 # base variables
-var player_sprite : Player
 var walls : TileMap
 var ground : TileMap
 var interactables : TileMap
@@ -27,15 +26,6 @@ func _ready():
 	# don't care about specifics for this tilemap as we won't be seeing it
 	warp_tiles = TileMap.new()
 	self.add_child(warp_tiles)
-
-
-## player section
-
-func get_player() -> Player:
-	return player_sprite
-
-func set_player(player : Player):
-	player_sprite = player
 
 ## walls
 
@@ -86,9 +76,9 @@ func update_position(child_node : Entity, new_position : Vector2):
 	child_node.set_position(ground.map_to_world(new_position))
 	# check if new tile is warp
 	var index = warp_tiles.get_cell(int(new_position.x),int(new_position.y))
+	yield(child_node, "movement_complete")
 	if child_node is Player and index != -1:
 		# if so, then wait for animation to stop before calling warp
-		yield(player_sprite, "movement_complete")
 		warp_data[index].enter_warp(child_node)
 
 func is_open(new_location : Vector2) -> bool:
