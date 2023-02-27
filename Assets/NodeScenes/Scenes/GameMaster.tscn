@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Scenes/GameMaster.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Entities/PartyData.gd" type="Script" id=2]
 [ext_resource path="res://Assets/NodeScenes/ControllerHandler.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/NodeScenes/UI/BaseUI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/NodeScenes/Scenes/Levels/TestWorld.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/NodeScenes/Entities/Player.tscn" type="PackedScene" id=6]
 
 [node name="GameMaster" type="Node"]
 script = ExtResource( 1 )
@@ -12,6 +13,9 @@ __meta__ = {
 "_edit_horizontal_guides_": [  ]
 }
 default_scene = ExtResource( 5 )
+
+[node name="Player" parent="." instance=ExtResource( 6 )]
+z_index = 9
 
 [node name="PartyData" type="Node" parent="."]
 script = ExtResource( 2 )
@@ -25,5 +29,3 @@ script = ExtResource( 2 )
 [node name="ControllerHandlerOne" parent="PartyData" instance=ExtResource( 3 )]
 
 [node name="Control" parent="." instance=ExtResource( 4 )]
-
-[editable path="Control"]

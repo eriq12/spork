@@ -16,7 +16,9 @@ const save_file_name = "user://savegame.save"
 export(PackedScene) var default_scene
 var map_asset : PackedScene
 var map : LevelTemplate
-var player_avatar : Player = null
+
+# player entity
+onready var player_avatar : Player = $Player
 var player_controller : int = -1
 
 # player data
@@ -103,33 +105,47 @@ func load_map(scene_source, x : int = 0, y : int = 0, look_direction : int = 0):
 	if scene_source is String:
 		scene_source = load(scene_source)
 	if scene_source != map_asset:
-		var temp_player_controller = player_controller
 		if map != null:
 			unload_map()
 		# load overworld maps
 		map = scene_source.instance()
 		add_child(map)
-		player_avatar = map.get_player()
-		# if player had control, shift back
-		if temp_player_controller != -1:
-			set_controller_to_player(temp_player_controller)
 		# remember map source
 		map_asset = scene_source
+	# resume player process
+	player_avatar.set_process(true)
 	# set proper position for player
 	player_avatar.set_grid_position(Vector2(x, y))
 	player_avatar.set_look_direction(look_direction)
 
 # removes map from play (and kicks players to their menu)
 func unload_map():
-	# unpair player form map if they are on
-	exit_overworld_player()
 	# unload existing map if exists
 	if map != null:
-		player_avatar = null
+		# stop process for player avatar
+		player_avatar.set_process(false)
+		# free map
 		map.queue_free()
 		map = null
 		map_asset = null
 
+# map related functions
+
+# moves player to related position on map
+func update_position(entity : Entity, new_position : Vector2):
+	if map != null:
+		map.update_position(entity, new_position)
+
+# checks if position is open on related map
+func is_open(position_check : Vector2) -> bool:
+	if map != null:
+		return map.is_open(position_check)
+	return false
+
+# interacts with associated tile
+func interact(x : int, y : int):
+	if map != null:
+		map.interact(x,y)
 
 # removes player from overworld control (if there exists one)
 func exit_overworld_player():
@@ -139,19 +155,26 @@ func exit_overworld_player():
 # sets player to control overworld
 func set_controller_to_player(controller_handler_id : int):
 	var controller_handler : ControllerHandler = controller_handlers[controller_handler_id]
+	# makes sure that the player avatar is not already being controlled
 	if player_controller == -1 or player_controller == controller_handler.get_player_id():
+		# if able to, then reserve and set to player
 		player_controller = controller_handler.get_player_id()
 		set_controller_target(controller_handler, player_avatar)
 		controller_control_state[controller_handler_id] = CONTROL_STATE.PLAYER
+		# hide menu
 		user_menu_ui[controller_handler_id].set_menu_active(false)
 
 # sets player to control menu
 func set_controller_to_menu(controller_handler_id : int, temporary_control : bool = false):
+	# get ui and handler for player
 	var ui_menu = user_menu_ui[controller_handler_id]
 	var controller_handler : ControllerHandler = controller_handlers[controller_handler_id]
+	# set to menu
 	set_controller_target(controller_handler, ui_menu)
 	controller_control_state[controller_handler_id] = CONTROL_STATE.MENU
+	# show menu
 	user_menu_ui[controller_handler_id].set_menu_active(true)
+	# if relieving control of player, then set player_controller to reflect
 	if player_controller == controller_handler_id and not temporary_control:
 		player_controller = -1
 
